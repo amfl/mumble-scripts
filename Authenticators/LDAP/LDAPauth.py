@@ -101,6 +101,7 @@
 #            * ldap
 #            * daemon (when run as a daemon)
 
+import os
 import sys
 import ldap
 import Ice
@@ -195,7 +196,9 @@ class config(object):
                 self.__dict__[h] = config()
                 for name, conv, vdefault in v:
                     try:
-                        self.__dict__[h].__dict__[name] = conv(cfg.get(h, name))
+                        self.__dict__[h].__dict__[name] = conv(
+                            cfg.get(h, name, vars=os.environ)
+                        )
                     except (
                         ValueError,
                         configparser.NoSectionError,
