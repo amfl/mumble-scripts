@@ -553,7 +553,7 @@ def do_main_program():
 
             # Parse the user information.
             uid = int(match[1][cfg.ldap.number_attr][0])
-            displayName = match[1][cfg.ldap.display_attr][0]
+            displayName = match[1][cfg.ldap.display_attr][0].decode("UTF-8")
             user_dn = match[0]
             debug(
                 "User match found, display '" + displayName + "' with UID " + repr(uid)
@@ -635,7 +635,8 @@ def do_main_program():
                 info = {}
 
                 if cfg.ldap.mail_attr in res[0][1]:
-                    info[Murmur.UserInfo.UserEmail] = res[0][1][cfg.ldap.mail_attr][0]
+                    ldap_email = res[0][1][cfg.ldap.mail_attr][0].decode("UTF-8")
+                    info[Murmur.UserInfo.UserEmail] = ldap_email
 
                 debug("getInfo %s -> %s", name, repr(info))
                 return (True, info)
@@ -790,7 +791,7 @@ def do_main_program():
             for dn, attrs in res:
                 if cfg.ldap.number_attr in attrs and cfg.ldap.display_attr in attrs:
                     uid = int(attrs[cfg.ldap.number_attr][0]) + cfg.user.id_offset
-                    name = attrs[cfg.ldap.display_attr][0]
+                    name = attrs[cfg.ldap.display_attr][0].decode("UTF-8")
                     users[uid] = name
             debug("getRegisteredUsers %s -> %s", filter, repr(users))
             return users
