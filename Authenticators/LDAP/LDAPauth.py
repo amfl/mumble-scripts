@@ -165,7 +165,7 @@ default = {
         ("host", str, "localhost"),
         ("port", int, "4063"),
     ),
-    "log": (("level", int, logging.DEBUG), ("file", str, "LDAPauth.log")),
+    "log": (("level", int, logging.INFO), ("file", str, "")),
 }
 
 #
