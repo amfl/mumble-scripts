@@ -909,7 +909,7 @@ if __name__ == "__main__":
         cfg = config(option.ini, default)
     except Exception as e:
         print(
-            "Fatal error, could not load config file from '%s'" % cfgfile,
+            "Fatal error, could not load config file from '%s'" % option.ini,
             file=sys.stderr,
         )
         sys.exit(1)
