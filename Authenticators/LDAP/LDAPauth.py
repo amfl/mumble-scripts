@@ -264,9 +264,7 @@ def do_main_program():
             )
             self.meta = Murmur.MetaPrx.uncheckedCast(base)
 
-            adapter = ice.createObjectAdapterWithEndpoints(
-                "Callback.Client", "tcp -h %s" % cfg.ice.host
-            )
+            adapter = ice.createObjectAdapterWithEndpoints("Callback.Client", "tcp")
             adapter.activate()
 
             metacbprx = adapter.addWithUUID(metaCallback(self))
