@@ -1,5 +1,4 @@
-#!/usr/bin/env python
-# -*- coding: utf-8 -*-
+#!/usr/bin/env python3
 # Copyright (C) 2011 Benjamin Jemlich <pcgod@user.sourceforge.net>
 # Copyright (C) 2011 Nathaniel Kofalt <nkofalt@users.sourceforge.net>
 # Copyright (C) 2013 Stefan Hacker <dd0t@users.sourceforge.net>
@@ -21,7 +20,7 @@
 #   software without specific prior written permission.
 #
 # THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
-# `AS IS'' AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+# 'AS IS' AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
 # LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
 # A PARTICULAR PURPOSE ARE DISCLAIMED.  IN NO EVENT SHALL THE FOUNDATION OR
 # CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL,
@@ -97,9 +96,9 @@
 # authentication scheme.
 #
 #    Requirements:
-#        * python >=2.4 and the following python modules:
-#            * ice-python
-#            * python-ldap
+#        * python >=3.0 and the following python modules:
+#            * zeroc-ice
+#            * ldap
 #            * daemon (when run as a daemon)
 
 import sys
@@ -208,7 +207,7 @@ def do_main_program():
     #
     # --- Authenticator implementation
     #    All of this has to go in here so we can correctly daemonize the tool
-    #    without loosing the file descriptors opened by the Ice module
+    #    without losing the file descriptors opened by the Ice module
     slicedir = Ice.getSliceDir()
     if not slicedir:
         slicedir = ["-I/usr/share/Ice/slice", "-I/usr/share/slice"]
@@ -251,7 +250,7 @@ def do_main_program():
                 warning("Consider using an ice secret to improve security")
 
             if cfg.glacier.enabled:
-                # info('Connecting to Glacier2 server (%s:%d)', glacier_host, glacier_port)
+                # info("Connecting to Glacier2 server (%s:%d)", glacier_host, glacier_port)
                 error("Glacier support not implemented yet")
                 # TODO: Implement this
 
@@ -280,7 +279,7 @@ def do_main_program():
             """
 
             # Ice.ConnectionRefusedException
-            # debug('Attaching callbacks')
+            # debug("Attaching callbacks")
             try:
                 if not quiet:
                     info("Attaching meta callback")
@@ -324,7 +323,7 @@ def do_main_program():
             Tries reapplies all callbacks to make sure the authenticator
             survives server restarts and disconnects.
             """
-            # debug('Watchdog run')
+            # debug("Watchdog run")
 
             try:
                 if not self.attachCallbacks(quiet=not self.failedWatch):
@@ -375,7 +374,7 @@ def do_main_program():
         value. This helps preventing the authenticator getting stuck in
         critical code paths. Only exceptions that are instances of classes
         given in the exceptions list are not caught.
-        
+
         The default is to catch all non-Ice exceptions.
         """
 
@@ -557,7 +556,7 @@ def do_main_program():
             displayName = match[1][cfg.ldap.display_attr][0]
             user_dn = match[0]
             debug(
-                'User match found, display "' + displayName + '" with UID ' + repr(uid)
+                "User match found, display '" + displayName + "' with UID " + repr(uid)
             )
 
             # Optionally check groups.
@@ -705,10 +704,10 @@ def do_main_program():
             for name, uid in self.name_uid_cache.items():
                 if uid == ldapid:
                     if name == "SuperUser":
-                        debug('idToName %d -> "SuperUser" catched', id)
+                        debug("idToName %d -> 'SuperUser' catched", id)
                         return FALL_THROUGH
 
-                    debug('idToName %d -> "%s"', id, name)
+                    debug("idToName %d -> '%s'", id, name)
                     return name
 
             debug("idToName %d -> ?", id)
@@ -733,7 +732,7 @@ def do_main_program():
             """
 
             FALL_THROUGH = -2
-            debug('registerUser "%s" -> fall through', name)
+            debug("registerUser '%s' -> fall through", name)
             return FALL_THROUGH
 
         @fortifyIceFu(-1)
@@ -858,7 +857,7 @@ def do_main_program():
     initdata.logger = CustomLogger()
 
     app = LDAPAuthenticatorApp()
-    state = app.main(sys.argv[:1], initData=initdata)
+    app.main(sys.argv[:1], initData=initdata)
     info("Shutdown complete")
 
 
@@ -909,7 +908,7 @@ if __name__ == "__main__":
         cfg = config(option.ini, default)
     except Exception as e:
         print(
-            'Fatal error, could not load config file from "%s"' % cfgfile,
+            "Fatal error, could not load config file from '%s'" % cfgfile,
             file=sys.stderr,
         )
         sys.exit(1)
@@ -921,7 +920,7 @@ if __name__ == "__main__":
         except IOError as e:
             # print>>sys.stderr, str(e)
             print(
-                'Fatal error, could not open logfile "%s"' % cfg.log.file,
+                "Fatal error, could not open logfile '%s'" % cfg.log.file,
                 file=sys.stderr,
             )
             sys.exit(1)
@@ -946,7 +945,7 @@ if __name__ == "__main__":
     except ImportError:
         if option.force_daemon:
             print(
-                'Fatal error, could not daemonize process due to missing "daemon" library, '
+                "Fatal error, could not daemonize process due to missing 'daemon' library, "
                 "please install the missing dependency and restart the authenticator",
                 file=sys.stderr,
             )
